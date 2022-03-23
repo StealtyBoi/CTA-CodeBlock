@@ -1,7 +1,60 @@
 #!/bin/bash
+clear
+echo "Please input the first octet of the IP you want to check without Periods"
+read A
+clear
+echo "what is the 2nd Octet"
+read B
+clear
+echo "what is the 3rd Octet"
+read C
+clear
+echo "what is the 4th Octet"
+read D
 
+clear
 
-
-for i in {1..254}
-do ping -c 1 -W 0.14 -l 3 192.168.1.$i &>/dev/null && echo "192.168.1.$i is up"
-done
+if [ $A -le 255 ]
+	then
+		echo "IP Address is Valid"
+	else
+		echo "1st octet is invalid"
+		exit 1
+fi
+		
+if [ $B -le 255 ]
+	then
+		echo "2nd octet is valid"
+	else
+		echo "2nd Octet is invalid"
+		exit 1
+fi
+			
+if [ $C -le 255 ]
+	then
+		echo "3rd octet is valid"
+	else
+		echo "3rd Octet is invalid"
+		exit 1
+fi		
+if [ $D -le 255 ]
+	then
+		echo "4th octet is valid"
+	else
+		echo "4th Octet is invalid"
+		exit 1
+fi
+clear
+echo "$A.$B.$C.$D is Valid."
+sleep 2
+clear 
+echo "Please enter your CIDR."
+read -r -p "$A.$B.$C.$D/" CIDR
+	if (($CIDR < 32))
+		then echo "That CIDR is valid"
+	else 
+		echo "The CIDR You entered is invalid."
+	fi
+fping -a -g "$A.$B.$C.$D/$CIDR" 2>/dev/null
+echo "Scan Completed"
+exit
